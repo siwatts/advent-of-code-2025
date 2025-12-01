@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
     // For testing
     int debuglimit = 1;
     int debug = 0;
-    bool debugapply = true;
+    bool debugapply = false;
 
     // User args
     string filename = "input";
@@ -43,11 +43,27 @@ int main(int argc, char* argv[])
 
     // Read file
     string line;
+    int num = 50; // Start dial on 50
     while (getline(input, line) && (!debugapply || debug < debuglimit))
     {
         debug++;
         if (debugapply) {
             cout << line << endl;
+        }
+        // L or R
+        bool right = (line[0] == 'R');
+        int value = stoi(line.substr(1));
+        if (right)
+        {
+            num = (num + value) % 100;
+        }
+        else
+        {
+            num = (num + 100 - value) % 100;
+        }
+        if (num == 0)
+        {
+            sum++;
         }
     }
 
