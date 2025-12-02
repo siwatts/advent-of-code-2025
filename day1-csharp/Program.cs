@@ -44,12 +44,13 @@ namespace AOC
             // Variables for output
             long res = 0;
             // <<<< Expected output for testing >>>>
-            long? exp = 3;
+            long? exp = null;
 
             // Read file
             String? line;
             int lineNr = 0;
             int dial = 50;
+            bool P2 = true;
             using (var streamReader = new StreamReader(filename))
             {
                 while ((line = streamReader.ReadLine()) != null && (!debugmode || lineNr < debuglimit))
@@ -62,23 +63,53 @@ namespace AOC
                     // <<<< Process line >>>>
                     bool right = line[0] == 'R';
                     int num = Int32.Parse(line.Substring(1));
-                    if (!right)
-                    {
-                        num *= -1;
-                    }
                     // Apply rotation
-                    dial += num;
-                    while (dial < 0)
+                    while (num > 0)
                     {
-                        dial += 100;
+                        int remainingDial;
+                        int thisMove;
+                        if (right)
+                        {
+                            remainingDial = 100-dial;
+                        }
+                        else
+                        {
+                            remainingDial = dial;
+                            if (remainingDial == 0)
+                            {
+                                remainingDial = 100;
+                            }
+                        }
+                        if (!P2)
+                        {
+                            thisMove = num;
+                        }
+                        else
+                        {
+                            thisMove = Math.Min(remainingDial, num);
+                        }
+                        num -= thisMove;
+                        if (right)
+                        {
+                            dial += thisMove;
+                        }
+                        else
+                        {
+                            dial -= thisMove;
+                        }
+                        while (dial > 99)
+                        {
+                            dial -= 100;
+                        }
+                        while (dial < 0)
+                        {
+                            dial += 100;
+                        }
+                        if (dial == 0)
+                        {
+                            res++;
+                        }
                     }
-                    while (dial > 99)
-                    {
-                        dial -= 100;
-                    }
-                    // Count 0 landings
-                    if (dial == 0)
-                        res++;
 
                     lineNr++;
                 }
