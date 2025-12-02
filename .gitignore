@@ -28,6 +28,21 @@ tags
 [._]*.un~
 
 # ================================================================================
+# vscode:
+# https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
+# ================================================================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+!*.code-workspace
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+# ================================================================================
 # C++:
 # https://gist.github.com/Yousha/3830712334ac30a90eb6041b932b68d7
 # ================================================================================
