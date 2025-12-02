@@ -44,11 +44,12 @@ namespace AOC
             // Variables for output
             long res = 0;
             // <<<< Expected output for testing >>>>
-            long? exp = null;
+            long? exp = 3;
 
             // Read file
             String? line;
             int lineNr = 0;
+            int dial = 50;
             using (var streamReader = new StreamReader(filename))
             {
                 while ((line = streamReader.ReadLine()) != null && (!debugmode || lineNr < debuglimit))
@@ -59,6 +60,25 @@ namespace AOC
                     }
 
                     // <<<< Process line >>>>
+                    bool right = line[0] == 'R';
+                    int num = Int32.Parse(line.Substring(1));
+                    if (!right)
+                    {
+                        num *= -1;
+                    }
+                    // Apply rotation
+                    dial += num;
+                    while (dial < 0)
+                    {
+                        dial += 100;
+                    }
+                    while (dial > 99)
+                    {
+                        dial -= 100;
+                    }
+                    // Count 0 landings
+                    if (dial == 0)
+                        res++;
 
                     lineNr++;
                 }
@@ -74,6 +94,7 @@ namespace AOC
             Console.WriteLine("Res = {0}", res);
             if (exp != null)
             {
+                Console.WriteLine("Exp = {0}", exp);
                 if (res == exp)
                 {
                     Console.WriteLine("Test: PASS");
