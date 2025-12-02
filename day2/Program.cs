@@ -5,9 +5,37 @@ namespace AOC
 {
     public class Program
     {
+        public static bool IsInvalidID(long id)
+        {
+            // Split number in half, see if it is a repeat of the same digits
+            // If odd number of digits immediately discard
+            int digits = (int)Math.Log10(id) + 1;
+            if (digits % 2 != 0)
+            {
+                return false;
+            }
+            // Even number of digits means we can split it
+            int halfDigits = digits / 2;
+            long left = 0;
+            long right = 0;
+            for (int i = 0; i < halfDigits; i++)
+            {
+                left *= 10;
+                left += id % 10;
+                id /= 10;
+            }
+            for (int i = 0; i < halfDigits; i++)
+            {
+                right *= 10;
+                right += id % 10;
+                id /= 10;
+            }
+
+            return (left == right);
+        }
         public static int Main(string[] args)
         {
-            Console.WriteLine("--\nAoC 2025 Day X\n--");
+            Console.WriteLine("--\nAoC 2025 Day 2\n--");
             // For testing
             int debuglimit = 10;
             bool debugmode = false;
@@ -44,7 +72,15 @@ namespace AOC
             // Variables for output
             long res = 0;
             // <<<< Expected output for testing >>>>
-            long? exp = null;
+            long? exp;
+            if (filename == "test")
+            {
+                exp = 1227775554;
+            }
+            else
+            {
+                exp = null;
+            }
 
             // Read file
             String? line;
@@ -59,6 +95,24 @@ namespace AOC
                     }
 
                     // <<<< Process line >>>>
+                    // List of ranges comma separated, aa-bb,cc-dd
+                    List<string> ranges = line.Split(',').ToList();
+                    long start;
+                    long end;
+                    foreach (string range in ranges)
+                    {
+                        List<string> vals = range.Split('-').ToList();
+                        start = Int64.Parse(vals[0]);
+                        end = Int64.Parse(vals[1]);
+                        // Loop over all values inclusive
+                        for (long id = start; id <= end; id++)
+                        {
+                            if (IsInvalidID(id))
+                            {
+                                res += id;
+                            }
+                        }
+                    }
 
                     lineNr++;
                 }
