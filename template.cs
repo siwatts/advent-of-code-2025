@@ -14,7 +14,7 @@ namespace AOC
 
             // User args
             List<string> argv = args.ToList();
-            string filename = "input";
+            string filename = "test";
             if (argv.Count == 0)
             {
                 Console.WriteLine("Assume default input file '{0}'", filename);
@@ -42,7 +42,9 @@ namespace AOC
             }
 
             // Variables for output
-            long sum = 0;
+            long res = 0;
+            // <<<< Expected output for testing >>>>
+            long? exp = null;
 
             // Read file
             String? line;
@@ -56,25 +58,30 @@ namespace AOC
                         Console.WriteLine(line);
                     }
 
+                    // <<<< Process line >>>>
+
                     lineNr++;
                 }
             }
 
-            // Processing
+            // Post-processing
             if (debugmode)
             {
             }
 
             // Output
             Console.WriteLine("--");
-            Console.WriteLine("Sum = {0}", sum);
-            if (sum == 123)
+            Console.WriteLine("Res = {0}", res);
+            if (exp != null)
             {
-                Console.WriteLine("Answer matches example expected answer");
-            }
-            else
-            {
-                Console.WriteLine("Answer does not match example expected answer");
+                if (res == exp)
+                {
+                    Console.WriteLine("Test: PASS");
+                }
+                else
+                {
+                    Console.WriteLine("Test: FAIL");
+                }
             }
 
             Console.WriteLine("--\nEnd.");
