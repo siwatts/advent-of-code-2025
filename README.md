@@ -41,7 +41,7 @@ dotnet new console -n dayX
 Add the newly created C# project to the top level `.sln` file for vscode functionality
 
 ```
-dotnet sln advent-of-code-2024.sln add day10/day10-csharp/day10-csharp.csproj
+dotnet sln advent-of-code-2025.sln add day10/day10-csharp/day10-csharp.csproj
 ```
 
 ### Run
