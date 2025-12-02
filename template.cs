@@ -74,6 +74,7 @@ namespace AOC
             Console.WriteLine("Res = {0}", res);
             if (exp != null)
             {
+                Console.WriteLine("Exp = {0}", res);
                 if (res == exp)
                 {
                     Console.WriteLine("Test: PASS");
