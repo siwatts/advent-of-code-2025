@@ -42,9 +42,16 @@ namespace AOC
             }
 
             // Variables for output
-            long res = 0;
+            long resP1 = 0;
+            long resP2 = 0;
             // <<<< Expected output for testing >>>>
-            long? exp = null;
+            long? expP1 = null;
+            long? expP2 = null;
+            if (filename == "test")
+            {
+                //expP1 = X;
+                //expP2 = X;
+            }
 
             // Read file
             String? line;
@@ -71,11 +78,25 @@ namespace AOC
 
             // Output
             Console.WriteLine("--");
-            Console.WriteLine("Res = {0}", res);
-            if (exp != null)
+            Console.WriteLine("ResP1 = {0}", resP1);
+            if (expP1 != null)
             {
-                Console.WriteLine("Exp = {0}", res);
-                if (res == exp)
+                Console.WriteLine("ExpP1 = {0}", expP1);
+                if (resP1 == expP1)
+                {
+                    Console.WriteLine("Test: PASS");
+                }
+                else
+                {
+                    Console.WriteLine("Test: FAIL");
+                }
+            }
+            Console.WriteLine("--");
+            Console.WriteLine("ResP2 = {0}", resP2);
+            if (expP2 != null)
+            {
+                Console.WriteLine("ExpP2 = {0}", expP2);
+                if (resP2 == expP2)
                 {
                     Console.WriteLine("Test: PASS");
                 }
