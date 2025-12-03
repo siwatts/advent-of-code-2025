@@ -44,6 +44,50 @@ namespace AOC
 
             return (10 * firstDigit) + lastDigit;
         }
+        public static long GetMaxJoltageP2(string line)
+        {
+            // Part 2, still find the largest leading value we have
+            // But this time we need 11 digits at least to the right
+            // Then proceed by removing all the lowest numbers that are furthest left until we have 12 left
+            int firstPos = -1;
+            // xxxxxxxxxxxxxxx e.g. length = 15
+            //    ^            maxFirstPos = 3
+            int maxFirstPos = line.Length - 12;
+            for (int i = 9; i >= 0; i--)
+            {
+                firstPos = line.IndexOf(i.ToString().First());
+                if (firstPos != -1 && firstPos <= maxFirstPos)
+                {
+                    break;
+                }
+            }
+            // Discard all to the left
+            line = line.Substring(firstPos);
+            // Now remove digits one at a time, starting from 0 -> 9, removing left most first
+            // until we have 12 left
+            int removalDigit = 0;
+            int pos;
+            while (line.Length > 12)
+            {
+                pos = line.IndexOf(removalDigit.ToString().First());
+                if (pos != -1)
+                {
+                    // Remove it
+                    line = line.Remove(pos, 1);
+                }
+                else
+                {
+                    // Increment digit
+                    removalDigit++;
+                    if (removalDigit > 9)
+                    {
+                        throw new InvalidDataException("Ran out of digits to remove");
+                    }
+                }
+            }
+
+            return Int64.Parse(line);
+        }
         public static int Main(string[] args)
         {
             Console.WriteLine("--\nAoC 2025 Day 3\n--");
@@ -88,6 +132,13 @@ namespace AOC
             {
                 exp = 357;
             }
+            long resP2 = 0;
+            // <<<< Expected output for testing >>>>
+            long? expP2 = null;
+            if (filename == "test")
+            {
+                expP2 = 3121910778619;
+            }
 
             // Read file
             String? line;
@@ -103,6 +154,7 @@ namespace AOC
 
                     // <<<< Process line >>>>
                     res += GetMaxJoltage(line);
+                    resP2 += GetMaxJoltageP2(line);
 
                     lineNr++;
                 }
@@ -120,6 +172,20 @@ namespace AOC
             {
                 Console.WriteLine("Exp = {0}", exp);
                 if (res == exp)
+                {
+                    Console.WriteLine("Test: PASS");
+                }
+                else
+                {
+                    Console.WriteLine("Test: FAIL");
+                }
+            }
+            Console.WriteLine("--");
+            Console.WriteLine("ResP2 = {0}", resP2);
+            if (expP2 != null)
+            {
+                Console.WriteLine("ExpP2 = {0}", expP2);
+                if (resP2 == expP2)
                 {
                     Console.WriteLine("Test: PASS");
                 }
