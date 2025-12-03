@@ -49,44 +49,37 @@ namespace AOC
             // Part 2, still find the largest leading value we have
             // But this time we need 11 digits at least to the right
             // Then proceed by removing all the lowest numbers that are furthest left until we have 12 left
-            int firstPos = -1;
+            long joltage = 0;
+            int pos = -1;
             // xxxxxxxxxxxxxxx e.g. length = 15
             //    ^            maxFirstPos = 3
-            int maxFirstPos = line.Length - 12;
-            for (int i = 9; i >= 0; i--)
+            int remainingLength = 12;
+            int maxPos;
+            while (remainingLength > 0)
             {
-                firstPos = line.IndexOf(i.ToString().First());
-                if (firstPos != -1 && firstPos <= maxFirstPos)
+                // Find first occurance of highest digit that leaves at least
+                // remainingLength-1 places to the right
+                maxPos = line.Length - remainingLength;
+                for (int i = 9; i >= 0; i--)
                 {
-                    break;
-                }
-            }
-            // Discard all to the left
-            line = line.Substring(firstPos);
-            // Now remove digits one at a time, starting from 0 -> 9, removing left most first
-            // until we have 12 left
-            int removalDigit = 0;
-            int pos;
-            while (line.Length > 12)
-            {
-                pos = line.IndexOf(removalDigit.ToString().First());
-                if (pos != -1)
-                {
-                    // Remove it
-                    line = line.Remove(pos, 1);
-                }
-                else
-                {
-                    // Increment digit
-                    removalDigit++;
-                    if (removalDigit > 9)
+                    char d = i.ToString().First();
+                    pos = line.IndexOf(d);
+                    if (pos != -1 && pos <= maxPos)
                     {
-                        throw new InvalidDataException("Ran out of digits to remove");
+                        joltage *= 10;
+                        joltage += i;
+                        remainingLength--;
+                        line = line.Substring(pos + 1);
+                        break;
                     }
+                }
+                if (pos == -1)
+                {
+                    throw new InvalidDataException("remainingLength " + remainingLength);
                 }
             }
 
-            return Int64.Parse(line);
+            return joltage;
         }
         public static int Main(string[] args)
         {
