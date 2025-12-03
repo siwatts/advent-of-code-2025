@@ -52,3 +52,20 @@ dotnet run
 # Or dotnet build to only build
 ```
 
+# Performance Metrics
+
+```bash
+time ./a.out
+perf stat ./a.out
+perf record ./a.out && perf report
+```
+
+## 7z
+
+Test data
+
+```bash
+7za l zip.7z # List
+7za x zip.7z # eXtract
+```
+
