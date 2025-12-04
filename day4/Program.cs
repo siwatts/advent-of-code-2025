@@ -69,7 +69,7 @@ namespace AOC
         }
         public int SumAccessiblePaperRolls()
         {
-            return grid.Where(p => IsAccessible(p.Item1, p.Item2)).Count();
+            return grid.Count(p => IsAccessible(p.Item1, p.Item2));
         }
         private int RemoveAccessiblePaperRolls()
         {
