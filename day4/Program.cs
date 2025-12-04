@@ -61,25 +61,49 @@ namespace AOC
 
             return sum;
         }
+        private bool IsAccessible(int x, int y)
+        {
+            // See if it is accessible
+            int num = NumberOfAdjacentPaperRolls(x, y);
+            // This paper roll is accessible if it has < 4 neighbours
+            return (num < 4);
+        }
         public int SumAccessiblePaperRolls()
         {
-            int sum = 0;
+            return RemoveAccessiblePaperRolls(dryrun: true);
+        }
+        private int RemoveAccessiblePaperRolls(bool dryrun = false)
+        {
+            int removed = 0;
+            // Mutate grid as we go, but we still need multiple passes
             for (int x = 0; x <= maxX; x++)
             {
                 for (int y = 0; y <= maxY; y++)
                 {
-                    if (IsPaperRoll(x, y))
+                    if (IsPaperRoll(x, y) && IsAccessible(x, y))
                     {
-                        // See if it is accessible
-                        int num = NumberOfAdjacentPaperRolls(x, y);
-                        // This paper roll is accessible if it has < 4 neighbours
-                        if (num < 4)
+                        // Remove it
+                        if (!dryrun)
                         {
-                            sum++;
+                            grid[y][x] = '.';
                         }
+                        removed++;
                     }
                 }
             }
+            return removed;
+        }
+        public int RemoveAllAccessiblePaperRolls()
+        {
+            int sum = 0;
+            int removed;
+            do
+            {
+                removed = RemoveAccessiblePaperRolls();
+                sum += removed;
+            }
+            while (removed > 0);
+
             return sum;
         }
     }
@@ -130,7 +154,7 @@ namespace AOC
             if (filename == "test")
             {
                 expP1 = 13;
-                //expP2 = X;
+                expP2 = 43;
             }
 
             // Read file
@@ -158,6 +182,7 @@ namespace AOC
             {
             }
             resP1 = warehouse.SumAccessiblePaperRolls();
+            resP2 = warehouse.RemoveAllAccessiblePaperRolls();
 
             // Output
             Console.WriteLine("--");
