@@ -5,7 +5,7 @@ namespace AOC
 {
     public class Warehouse
     {
-        private List<List<char>> grid = new List<List<char>>();
+        private HashSet<(int,int)> grid = new HashSet<(int,int)>();
         private int maxX = -1;
         private int maxY = -1;
         private const char paperChar = '@';
@@ -23,20 +23,19 @@ namespace AOC
                 maxX = line.Length - 1;
             }
 
-            grid.Add(line.ToList<char>());
+            int y = maxY+1;
+            for (int x = 0; x < line.Length; x++)
+            {
+                if (line[x] == paperChar)
+                {
+                    grid.Add((x,y));
+                }
+            }
             maxY++;
         }
         private bool IsPaperRoll(int x, int y)
         {
-            if (x >= 0 && x <= maxX)
-            {
-                if (y >= 0 && y <= maxY)
-                {
-                    return (grid[y][x] == paperChar);
-                }
-            }
-            // Out of bounds returns false
-            return false;
+            return grid.Contains((x,y));
         }
         private int NumberOfAdjacentPaperRolls(int x, int y)
         {
@@ -70,27 +69,13 @@ namespace AOC
         }
         public int SumAccessiblePaperRolls()
         {
-            return RemoveAccessiblePaperRolls(dryrun: true);
+            return grid.Where(p => IsAccessible(p.Item1, p.Item2)).Count();
         }
-        private int RemoveAccessiblePaperRolls(bool dryrun = false)
+        private int RemoveAccessiblePaperRolls()
         {
-            int removed = 0;
-            // Mutate grid as we go, but we still need multiple passes
-            for (int x = 0; x <= maxX; x++)
-            {
-                for (int y = 0; y <= maxY; y++)
-                {
-                    if (IsPaperRoll(x, y) && IsAccessible(x, y))
-                    {
-                        // Remove it
-                        if (!dryrun)
-                        {
-                            grid[y][x] = '.';
-                        }
-                        removed++;
-                    }
-                }
-            }
+            // Remove as we go
+            int removed = grid.RemoveWhere(p => IsAccessible(p.Item1, p.Item2));
+
             return removed;
         }
         public int RemoveAllAccessiblePaperRolls()
